@@ -64,9 +64,8 @@ class TestDatabaseContextManager:
                 "source",
                 "mp3_path",
                 "duration_sec",
-                "content_hash",
+                "hash",
                 "created_at",
-                "content_bytes",
             }
             assert expected_columns.issubset(columns)
 
@@ -95,9 +94,9 @@ class TestDatabaseOperations:
 
             episode = episodes[0]
             assert episode[1] == "Test Episode"  # title
-            assert episode[2] == "test_source"  # source
-            assert episode[4] == 120  # duration_sec
-            assert episode[7] == b"test content"  # content_bytes
+            assert episode[3] == "test_source"  # source
+            assert episode[6] == 120  # duration_sec
+            # Note: content_bytes is not stored in the database, only the hash
 
     def test_add_multiple_episodes(self, temp_dir):
         """Test adding multiple episodes."""
@@ -174,8 +173,8 @@ class TestDatabaseOperations:
             episodes = db.list_episodes()
             episode = episodes[0]
 
-            # content_hash should be at index 3
-            content_hash = episode[3]
+            # hash should be at index 4
+            content_hash = episode[4]
             assert content_hash is not None
             assert len(content_hash) == 64  # SHA-256 hash length
 
