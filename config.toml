@@ -1,0 +1,15 @@
+output_dir = "~/NewsletterCast"
+feed_title = "My Newsletters"
+site_url = "http://127.0.0.1:8080"
+tts_provider = "openai"
+voice = "alloy"
+bitrate = "64k"
+max_minutes = 60
+
+[gmail]
+enabled = true
+user = ""  # Set via GMAIL_USER environment variable
+app_password = ""  # Set via GMAIL_APP_PASSWORD environment variable
+label = "Newsletters"
+method = "app_password"
+
