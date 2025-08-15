@@ -8,7 +8,7 @@ from typing import Optional
 import requests
 import trafilatura
 from bs4 import BeautifulSoup
-from readability import Document
+from readability.readability import Document
 
 
 @dataclass

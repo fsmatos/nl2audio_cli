@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from imap_tools import MailBox
-from readability import Document
+from readability.readability import Document
 
 from .gmail_oauth import (
     GmailOAuthError,
