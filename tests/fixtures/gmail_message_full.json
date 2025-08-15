@@ -1,0 +1,71 @@
+{
+  "id": "18c1234567890abcdef",
+  "threadId": "18c1234567890abcdef",
+  "labelIds": ["INBOX", "CATEGORY_PERSONAL", "Newsletters"],
+  "snippet": "This week has been remarkable for artificial intelligence research...",
+  "historyId": "123456789",
+  "internalDate": "1710432000000",
+  "payload": {
+    "partId": "",
+    "mimeType": "multipart/alternative",
+    "filename": "",
+    "headers": [
+      {
+        "name": "From",
+        "value": "newsletter@techweekly.com"
+      },
+      {
+        "name": "To",
+        "value": "user@gmail.com"
+      },
+      {
+        "name": "Subject",
+        "value": "Weekly Tech Newsletter - Issue #42"
+      },
+      {
+        "name": "Date",
+        "value": "Fri, 15 Mar 2024 10:00:00 +0000"
+      },
+      {
+        "name": "Message-ID",
+        "value": "<123456789.abcdef@techweekly.com>"
+      }
+    ],
+    "body": {
+      "size": 0
+    },
+    "parts": [
+      {
+        "partId": "0",
+        "mimeType": "text/plain",
+        "filename": "",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "text/plain; charset=UTF-8"
+          }
+        ],
+        "body": {
+          "data": "V2Vla2x5IFRlY2ggTmV3c2xldHRlcg0KSXNzdWUgIzQyIC0gTWFyY2ggMTUsIDIwMjQNCg0KQUkgQnJlYWt0aHJvdWdocyBpbiAyMDI0DQoNClRoaXMgd2VlayBoYXMgYmVlbiByZW1hcmthYmxlIGZvciBhcnRpZmljaWFsIGludGVsbGlnZW5jZSByZXNlYXJjaC4gU2V2ZXJhbCBrZXkgZGV2ZWxvcG1lbnRzIGhhdmUgZW1lcmdlZCB0aGF0IGNvdWxkIHJlc2hhcGUgaG93IHdlIHRoaW5rIGFib3V0IG1hY2hpbmUgbGVhcm5pbmcgYW5kIGF1dG9tYXRpb24u",
+          "size": 256
+        }
+      },
+      {
+        "partId": "1",
+        "mimeType": "text/html",
+        "filename": "",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "text/html; charset=UTF-8"
+          }
+        ],
+        "body": {
+          "data": "PGh0bWw+PGhlYWQ+PHRpdGxlPldlZWtseSBUZWNoIE5ld3NsZXR0ZXIgLSBJc3N1ZSAjNDI8L3RpdGxlPjwvaGVhZD48Ym9keT48aDE+V2Vla2x5IFRlY2ggTmV3c2xldHRlcjwvaDE+PHA+SXNzdWUgIzQyIC0gTWFyY2ggMTUsIDIwMjQ8L3A+PGgyPkFJIEJyZWFrdGhyb3VnaHMgaW4gMjAyNDwvaDI+PHA+VGhpcyB3ZWVrIGhhcyBiZWVuIHJlbWFya2FibGUgZm9yIGFydGlmaWNpYWwgaW50ZWxsaWdlbmNlIHJlc2VhcmNoLiBTZXZlcmFsIGtleSBkZXZlbG9wbWVudHMgaGF2ZSBlbWVyZ2VkIHRoYXQgY291bGQgcmVzaGFwZSBob3cgd2UgdGhpbmsgYWJvdXQgbWFjaGluZSBsZWFybmluZyBhbmQgYXV0b21hdGlvbi48L3A+PC9ib2R5PjwvaHRtbD4=",
+          "size": 512
+        }
+      }
+    ]
+  },
+  "sizeEstimate": 768
+} 

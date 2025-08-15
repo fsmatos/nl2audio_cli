@@ -9,6 +9,7 @@
 !pyproject.toml
 !package.json
 !package-lock.json
+!tests/fixtures/*.json
 
 # Application data and user content
 NewsletterCast/
