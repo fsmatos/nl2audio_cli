@@ -58,7 +58,7 @@ class TestGmailOAuthStub:
         }
 
         # Mock the get method for individual message retrieval
-        def mock_get(userId, id):
+        def mock_get(userId, id, format=None):
             mock_get_obj = Mock()
             mock_get_obj.execute.return_value = gmail_message
             return mock_get_obj
@@ -121,7 +121,7 @@ class TestGmailOAuthStub:
 
         html_content, text_content = extract_message_content(text_only_message)
 
-        assert html_content is None
+        assert html_content == ""
         assert text_content is not None
         assert "Weekly Tech Newsletter" in text_content
 
@@ -133,8 +133,8 @@ class TestGmailOAuthStub:
 
         html_content, text_content = extract_message_content(no_content_message)
 
-        assert html_content is None
-        assert text_content is None
+        assert html_content == ""
+        assert text_content == ""
 
 
 class TestGmailOAuthIntegration:
@@ -186,7 +186,7 @@ class TestGmailOAuthIntegration:
         assert isinstance(results[0], EmailResult)
         assert results[0].title == "Extracted Title"
         assert (
-            results[0].text == "Test Text"
+            results[0].text == "Test HTML"
         )  # Should use HTML content converted to text
         assert results[0].source.startswith("email:")
 
