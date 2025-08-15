@@ -55,9 +55,7 @@ jobs:
 
     - name: Scan for secrets
       run: |
-        detect-secrets --baseline .secrets.baseline scan
-      env:
-        DETECT_SECRETS_SCAN_ARGS: --baseline .secrets.baseline
+        detect-secrets scan --baseline .secrets.baseline
 
   security:
     runs-on: ubuntu-latest
@@ -77,6 +75,4 @@ jobs:
 
     - name: Scan for new secrets
       run: |
-        detect-secrets --baseline .secrets.baseline scan
-      env:
-        DETECT_SECRETS_SCAN_ARGS: --baseline .secrets.baseline
+        detect-secrets scan --baseline .secrets.baseline
