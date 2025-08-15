@@ -147,7 +147,7 @@ class TestGmail:
         class MockIMAPConnection:
             def __init__(self, *args, **kwargs):
                 pass
-                
+
             def login(self, user, password):
                 return ("OK", [b"Logged in"])
 
@@ -156,7 +156,7 @@ class TestGmail:
 
             def close(self):
                 pass
-                
+
             def logout(self):
                 pass
 
@@ -186,17 +186,19 @@ class TestConfigValidation:
 
         # Check that we get results
         assert len(results) > 0
-        
+
         # Check that basic infrastructure checks pass
-        output_dir_check = next((r for r in results if r.name == "Output Directory"), None)
+        output_dir_check = next(
+            (r for r in results if r.name == "Output Directory"), None
+        )
         assert output_dir_check is not None
         assert output_dir_check.status == "pass"
-        
+
         # Check that FFmpeg check passes
         ffmpeg_check = next((r for r in results if r.name == "FFmpeg"), None)
         assert ffmpeg_check is not None
         assert ffmpeg_check.status == "pass"
-        
+
         # Check that OpenAI key check passes (with mock env vars)
         openai_check = next((r for r in results if r.name == "OpenAI API Key"), None)
         assert openai_check is not None
@@ -208,12 +210,14 @@ class TestConfigValidation:
 
         # Check that we get results
         assert len(results) > 0
-        
+
         # Check that basic infrastructure checks pass
-        output_dir_check = next((r for r in results if r.name == "Output Directory"), None)
+        output_dir_check = next(
+            (r for r in results if r.name == "Output Directory"), None
+        )
         assert output_dir_check is not None
         assert output_dir_check.status == "pass"
-        
+
         # Check that FFmpeg check passes
         ffmpeg_check = next((r for r in results if r.name == "FFmpeg"), None)
         assert ffmpeg_check is not None
