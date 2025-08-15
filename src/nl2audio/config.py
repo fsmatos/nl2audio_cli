@@ -1,17 +1,18 @@
 from __future__ import annotations
-from dataclasses import dataclass
-from pathlib import Path
+
 import os
+from dataclasses import dataclass, field
+from pathlib import Path
 from typing import List, Optional
+
 import tomlkit
 from dotenv import load_dotenv
-from dataclasses import dataclass, field
-
 
 load_dotenv()
 
 DEFAULT_DIR = Path(os.path.expanduser("~")) / "NewsletterCast"
 CONFIG_PATH = Path(os.path.expanduser("~")) / ".nl2audio" / "config.toml"
+
 
 @dataclass
 class GmailConfig:
@@ -21,16 +22,19 @@ class GmailConfig:
     label: str = "Newsletters"
     method: str = "app_password"  # "oauth" or "app_password"
 
+
 @dataclass
 class RSSConfig:
     enabled: bool = False
-    feeds: list[str] = field(default_factory=list)   # ✅ use default_factory
+    feeds: list[str] = field(default_factory=list)  # ✅ use default_factory
+
 
 @dataclass
 class LoggingConfig:
     level: str = "INFO"
     enable_file_logging: bool = True
     log_file: Optional[str] = None  # If None, will use default location
+
 
 @dataclass
 class AppConfig:
@@ -42,8 +46,9 @@ class AppConfig:
     bitrate: str = "64k"
     max_minutes: int = 60
     gmail: GmailConfig = field(default_factory=GmailConfig)  # ✅
-    rss: RSSConfig = field(default_factory=RSSConfig)        # ✅
+    rss: RSSConfig = field(default_factory=RSSConfig)  # ✅
     logging: LoggingConfig = field(default_factory=LoggingConfig)  # ✅
+
 
 def ensure_config() -> AppConfig:
     if not CONFIG_PATH.exists():
@@ -53,37 +58,51 @@ def ensure_config() -> AppConfig:
         return cfg
     return load_config()
 
+
 def load_config() -> AppConfig:
     if not CONFIG_PATH.exists():
         return AppConfig()
     text = CONFIG_PATH.read_text(encoding="utf-8")
     data = tomlkit.parse(text)
+
     # Simple, forgiving loader
-    def get(d,k,default):
+    def get(d, k, default):
         return d[k] if k in d and d[k] is not None else default
-    
+
     gmail_d = get(data, "gmail", {})
     rss_d = get(data, "rss", {})
     logging_d = get(data, "logging", {})
-    
+
     # Priority: Environment variables > Config file > Defaults
-    output_dir = os.getenv("NL2AUDIO_OUTPUT_DIR") or get(data, "output_dir", str(DEFAULT_DIR))
-    feed_title = os.getenv("NL2AUDIO_FEED_TITLE") or get(data, "feed_title", "My Newsletters")
-    site_url = os.getenv("NL2AUDIO_SITE_URL") or get(data, "site_url", "http://127.0.0.1:8080")
-    tts_provider = os.getenv("NL2AUDIO_TTS_PROVIDER") or get(data, "tts_provider", "openai")
+    output_dir = os.getenv("NL2AUDIO_OUTPUT_DIR") or get(
+        data, "output_dir", str(DEFAULT_DIR)
+    )
+    feed_title = os.getenv("NL2AUDIO_FEED_TITLE") or get(
+        data, "feed_title", "My Newsletters"
+    )
+    site_url = os.getenv("NL2AUDIO_SITE_URL") or get(
+        data, "site_url", "http://127.0.0.1:8080"
+    )
+    tts_provider = os.getenv("NL2AUDIO_TTS_PROVIDER") or get(
+        data, "tts_provider", "openai"
+    )
     voice = os.getenv("NL2AUDIO_VOICE") or get(data, "voice", "alloy")
     bitrate = os.getenv("NL2AUDIO_BITRATE") or get(data, "bitrate", "64k")
     max_minutes = int(os.getenv("NL2AUDIO_MAX_MINUTES") or get(data, "max_minutes", 60))
-    
+
     # Gmail config with environment variable priority
     gmail_user = os.getenv("GMAIL_USER") or get(gmail_d, "user", "")
-    gmail_app_password = os.getenv("GMAIL_APP_PASSWORD") or get(gmail_d, "app_password", "")
+    gmail_app_password = os.getenv("GMAIL_APP_PASSWORD") or get(
+        gmail_d, "app_password", ""
+    )
     gmail_label = os.getenv("GMAIL_LABEL") or get(gmail_d, "label", "Newsletters")
-    
+
     # Logging config with environment variable priority
     log_level = os.getenv("NL2AUDIO_LOG_LEVEL") or get(logging_d, "level", "INFO")
-    enable_file_logging = os.getenv("NL2AUDIO_ENABLE_FILE_LOGGING", "true").lower() == "true" or get(logging_d, "enable_file_logging", True)
-    
+    enable_file_logging = os.getenv(
+        "NL2AUDIO_ENABLE_FILE_LOGGING", "true"
+    ).lower() == "true" or get(logging_d, "enable_file_logging", True)
+
     return AppConfig(
         output_dir=Path(output_dir).expanduser(),
         feed_title=feed_title,
@@ -107,8 +126,9 @@ def load_config() -> AppConfig:
             level=log_level,
             enable_file_logging=enable_file_logging,
             log_file=get(logging_d, "log_file", None),
-        )
+        ),
     )
+
 
 def save_config(cfg: AppConfig) -> None:
     doc = tomlkit.document()

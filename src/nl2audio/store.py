@@ -1,9 +1,10 @@
 from __future__ import annotations
-from pathlib import Path
-import sqlite3
-from typing import Optional, Iterable
+
 import hashlib
+import sqlite3
 import time
+from pathlib import Path
+from typing import Iterable, Optional
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS episodes (
@@ -17,6 +18,7 @@ CREATE TABLE IF NOT EXISTS episodes (
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_hash ON episodes(hash);
 """
+
 
 class DB:
     def __init__(self, path: Path):
@@ -33,11 +35,18 @@ class DB:
         self.close()
 
     def close(self):
-        if hasattr(self, 'conn') and self.conn:
+        if hasattr(self, "conn") and self.conn:
             self.conn.close()
             self.conn = None
 
-    def add_episode(self, title: str, source: str, mp3_path: Path, duration_sec: int, content_bytes: bytes) -> int:
+    def add_episode(
+        self,
+        title: str,
+        source: str,
+        mp3_path: Path,
+        duration_sec: int,
+        content_bytes: bytes,
+    ) -> int:
         h = hashlib.sha256(content_bytes).hexdigest()
         now = int(time.time())
         cur = self.conn.cursor()
@@ -49,5 +58,7 @@ class DB:
         return cur.lastrowid
 
     def list_episodes(self):
-        cur = self.conn.execute("SELECT id, title, created_at, source, hash, mp3_path, duration_sec FROM episodes ORDER BY created_at DESC;")
+        cur = self.conn.execute(
+            "SELECT id, title, created_at, source, hash, mp3_path, duration_sec FROM episodes ORDER BY created_at DESC;"
+        )
         return cur.fetchall()

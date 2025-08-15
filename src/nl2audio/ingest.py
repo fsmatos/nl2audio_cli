@@ -1,18 +1,23 @@
 from __future__ import annotations
+
+import re
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
-import re, sys
+
 import requests
+import trafilatura
 from bs4 import BeautifulSoup
 from readability import Document
-import trafilatura
+
 
 @dataclass
 class IngestResult:
     title: str
     text: str
     source: str
+
 
 def _html_to_text(html: str) -> str:
     # Try readability first
@@ -27,11 +32,11 @@ def _html_to_text(html: str) -> str:
                 break
             except Exception:
                 continue
-        
+
         if soup is None:
             # Last resort: try with basic html.parser
             soup = BeautifulSoup(content_html, "html.parser")
-            
+
     except Exception:
         # If readability fails, try direct parsing
         soup = None
@@ -41,28 +46,31 @@ def _html_to_text(html: str) -> str:
                 break
             except Exception:
                 continue
-        
+
         if soup is None:
             # Last resort: try with basic html.parser
             soup = BeautifulSoup(html, "html.parser")
-    
+
     # Clean up the HTML
     for tag in soup(["script", "style", "noscript"]):
         tag.decompose()
-    
+
     text = soup.get_text("\n")
     # Basic cleanup
     text = re.sub(r"\n\s*\n\s*\n+", "\n\n", text).strip()
     return text
 
-def from_source(source: str, stdin_text: Optional[str]=None) -> IngestResult:
+
+def from_source(source: str, stdin_text: Optional[str] = None) -> IngestResult:
     # If source looks like URL
     if re.match(r"^https?://", source, flags=re.I):
         r = requests.get(source, timeout=20)
         r.raise_for_status()
         html = r.text
         # Try trafilatura to extract main content
-        extracted = trafilatura.extract(html, include_comments=False, include_tables=False) or _html_to_text(html)
+        extracted = trafilatura.extract(
+            html, include_comments=False, include_tables=False
+        ) or _html_to_text(html)
         title = Document(html).short_title() if html else "Untitled"
         return IngestResult(title=title, text=extracted, source=source)
 
@@ -70,7 +78,9 @@ def from_source(source: str, stdin_text: Optional[str]=None) -> IngestResult:
     if p.exists():
         if p.suffix.lower() in {".html", ".htm"}:
             html = p.read_text(encoding="utf-8", errors="ignore")
-            extracted = trafilatura.extract(html, include_comments=False, include_tables=False) or _html_to_text(html)
+            extracted = trafilatura.extract(
+                html, include_comments=False, include_tables=False
+            ) or _html_to_text(html)
             title = Document(html).short_title() or p.stem
             return IngestResult(title=title, text=extracted, source=str(p))
         else:
