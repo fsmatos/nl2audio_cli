@@ -103,7 +103,7 @@ def validate_config_health() -> None:
         console.print("✅ Environment variables validated")
 
         # Check OpenAI API key
-        api_key = check_openai_api_key()
+        check_openai_api_key()
         console.print("✅ OpenAI API key validated")
 
         console.print("✅ All validation checks passed!")

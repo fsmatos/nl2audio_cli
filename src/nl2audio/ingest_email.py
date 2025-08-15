@@ -77,7 +77,7 @@ def fetch_gmail_oauth(cfg):
 
                 try:
                     title = Document(content).short_title() or subject
-                except:
+                except Exception:
                     title = subject
 
                 text = _html_to_text(content)
@@ -135,7 +135,7 @@ def fetch_gmail_imap(cfg):
 
                     try:
                         title = Document(html).short_title() or msg.subject
-                    except:
+                    except Exception:
                         title = msg.subject
 
                     text = _html_to_text(html)
@@ -162,7 +162,7 @@ def fetch_gmail_imap(cfg):
                         continue
                     try:
                         title = Document(html).short_title() or msg.subject
-                    except:
+                    except Exception:
                         title = msg.subject
                     text = _html_to_text(html)
                     results.append(

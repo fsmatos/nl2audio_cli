@@ -163,7 +163,7 @@ class TestDatabaseOperations:
 
         with DB(db_path) as db:
             content = b"This is test content for hashing"
-            episode_id = db.add_episode(
+            db.add_episode(
                 title="Hash Test",
                 source="hash_test",
                 mp3_path=Path("/tmp/hash.mp3"),
@@ -195,8 +195,7 @@ class TestDatabaseErrorHandling:
 
         # Should raise an error when trying to create database in invalid location
         with pytest.raises(Exception):
-            with DB(invalid_path) as db:
-                pass
+            DB(invalid_path)
 
     def test_database_corruption_handling(self, temp_dir):
         """Test handling of corrupted database."""
@@ -231,7 +230,7 @@ class TestDatabaseConcurrency:
 
         # First connection adds an episode
         with DB(db_path) as db1:
-            episode_id = db1.add_episode(
+            db1.add_episode(
                 title="Concurrent Test",
                 source="concurrent",
                 mp3_path=Path("/tmp/concurrent.mp3"),
@@ -250,9 +249,7 @@ class TestDatabaseConcurrency:
         db_path = temp_dir / "test.db"
 
         # Create database with one connection
-        with DB(db_path) as db1:
-            # This connection should be independent
-            pass
+        DB(db_path)
 
         # Create another connection
         with DB(db_path) as db2:
