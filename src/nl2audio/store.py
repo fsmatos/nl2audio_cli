@@ -58,6 +58,6 @@ class DB:
 
     def list_episodes(self):
         cur = self.conn.execute(
-            "SELECT id, title, created_at, source, hash, mp3_path, duration_sec FROM episodes ORDER BY created_at DESC;"
+            "SELECT id, title, created_at, source, hash, mp3_path, duration_sec FROM episodes ORDER BY created_at ASC;"
         )
         return cur.fetchall()
