@@ -4,14 +4,18 @@ Utility functions for retry logic, progress tracking, and error recovery.
 
 from __future__ import annotations
 
-import asyncio
 import time
 from functools import wraps
 from typing import Any, Callable, Optional, TypeVar
 
 from rich.console import Console
-from rich.progress import (BarColumn, Progress, SpinnerColumn, TextColumn,
-                           TimeElapsedColumn)
+from rich.progress import (
+    BarColumn,
+    Progress,
+    SpinnerColumn,
+    TextColumn,
+    TimeElapsedColumn,
+)
 
 from .logging import get_logger
 

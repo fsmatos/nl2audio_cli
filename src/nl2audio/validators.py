@@ -4,15 +4,10 @@ Comprehensive validation and health check utilities for nl2audio.
 
 from __future__ import annotations
 
-import imaplib
 import os
 import shutil
-import socket
 import subprocess
-import sys
-import time
 from dataclasses import dataclass
-from pathlib import Path
 from typing import List, Literal, Optional
 from urllib.parse import urlparse
 
@@ -229,8 +224,11 @@ def check_gmail_login(cfg: AppConfig) -> CheckResult:
 def check_gmail_oauth(cfg: AppConfig) -> CheckResult:
     """Check Gmail OAuth connectivity."""
     try:
-        from .gmail_oauth import (build_gmail_service, get_label_id,
-                                  get_stored_credentials)
+        from .gmail_oauth import (
+            build_gmail_service,
+            get_label_id,
+            get_stored_credentials,
+        )
 
         # Check if we have stored credentials
         creds = get_stored_credentials(cfg.gmail.user)

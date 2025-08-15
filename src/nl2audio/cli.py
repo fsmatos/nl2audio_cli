@@ -1,11 +1,9 @@
 from __future__ import annotations
 
 import http.server
-import io
 import os
 import socketserver
 import sys
-import threading
 from pathlib import Path
 
 import typer
@@ -15,19 +13,22 @@ from rich.panel import Panel
 
 from .config import CONFIG_PATH, AppConfig, ensure_config, save_config
 from .feed import build_feed
-from .gmail_oauth import (GmailOAuthError, authenticate_gmail,
-                          build_gmail_service, extract_message_subject,
-                          get_label_id, get_stored_credentials, list_messages)
+from .gmail_oauth import (
+    GmailOAuthError,
+    authenticate_gmail,
+    build_gmail_service,
+    extract_message_subject,
+    get_label_id,
+    get_stored_credentials,
+    list_messages,
+)
 from .ingest import from_source
 from .ingest_email import fetch_gmail
-from .logging import (get_logger, log_error, log_info, log_success,
-                      log_warning, setup_logging)
+from .logging import get_logger, log_error, log_success, setup_logging
 from .store import DB
 from .tts import TTSLengthError, synthesize
-from .validation import (ValidationError, check_gmail_credentials,
-                         check_output_directory, validate_config_health)
-from .validators import (CheckResult, get_check_summary, validate_config,
-                         validate_runtime)
+from .validation import ValidationError
+from .validators import get_check_summary, validate_config, validate_runtime
 
 app = typer.Typer(help="Turn newsletters into a private podcast.")
 
@@ -195,7 +196,7 @@ def add(
         validation_results = validate_config(cfg)
         failed_checks = [r for r in validation_results if r.status == "fail"]
         if failed_checks:
-            error_msg = f"Configuration validation failed:\n" + "\n".join(
+            error_msg = "Configuration validation failed:\n" + "\n".join(
                 [f"• {r.name}: {r.message}" for r in failed_checks]
             )
             log_error(error_msg)
@@ -324,7 +325,7 @@ def gen_feed():
         validation_results = validate_config(cfg)
         failed_checks = [r for r in validation_results if r.status == "fail"]
         if failed_checks:
-            error_msg = f"Configuration validation failed:\n" + "\n".join(
+            error_msg = "Configuration validation failed:\n" + "\n".join(
                 [f"• {r.name}: {r.message}" for r in failed_checks]
             )
             log_error(error_msg)
@@ -371,7 +372,7 @@ def serve(
         validation_results = validate_config(cfg)
         failed_checks = [r for r in validation_results if r.status == "fail"]
         if failed_checks:
-            error_msg = f"Configuration validation failed:\n" + "\n".join(
+            error_msg = "Configuration validation failed:\n" + "\n".join(
                 [f"• {r.name}: {r.message}" for r in failed_checks]
             )
             log_error(error_msg)
@@ -418,7 +419,7 @@ def fetch_email():
         validation_results = validate_config(cfg)
         failed_checks = [r for r in validation_results if r.status == "fail"]
         if failed_checks:
-            error_msg = f"Configuration validation failed:\n" + "\n".join(
+            error_msg = "Configuration validation failed:\n" + "\n".join(
                 [f"• {r.name}: {r.message}" for r in failed_checks]
             )
             log_error(error_msg)

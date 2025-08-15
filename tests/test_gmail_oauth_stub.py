@@ -3,15 +3,16 @@ Tests for nl2audio Gmail OAuth module with mocked API responses.
 """
 
 import base64
-import json
-from pathlib import Path
 from unittest.mock import Mock, patch
 
 import pytest
 
-from nl2audio.gmail_oauth import (build_gmail_service, extract_message_content,
-                                  extract_message_subject, get_label_id,
-                                  list_messages)
+from nl2audio.gmail_oauth import (
+    extract_message_content,
+    extract_message_subject,
+    get_label_id,
+    list_messages,
+)
 from nl2audio.ingest_email import EmailResult, fetch_gmail_oauth
 
 

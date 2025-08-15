@@ -171,4 +171,4 @@ If you encounter issues:
 1. Check the troubleshooting section above
 2. Run `nl2audio doctor --probe-gmail` for diagnostic information
 3. Check the logs for detailed error messages
-4. Ensure all dependencies are properly installed 
+4. Ensure all dependencies are properly installed

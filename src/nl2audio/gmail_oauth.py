@@ -5,11 +5,8 @@ Gmail OAuth authentication and API operations for nl2audio.
 from __future__ import annotations
 
 import json
-import os
-import webbrowser
 from pathlib import Path
 from typing import List, Optional, Tuple
-from urllib.parse import urlparse
 
 import keyring
 from google.auth.transport.requests import Request
@@ -18,7 +15,6 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-from .config import AppConfig
 from .logging import get_logger
 
 logger = get_logger(__name__)

@@ -3,9 +3,15 @@ from dataclasses import dataclass
 from imap_tools import MailBox
 from readability import Document
 
-from .gmail_oauth import (GmailOAuthError, build_gmail_service,
-                          extract_message_content, extract_message_subject,
-                          get_label_id, get_stored_credentials, list_messages)
+from .gmail_oauth import (
+    GmailOAuthError,
+    build_gmail_service,
+    extract_message_content,
+    extract_message_subject,
+    get_label_id,
+    get_stored_credentials,
+    list_messages,
+)
 from .ingest import _html_to_text
 
 
@@ -124,7 +130,7 @@ def fetch_gmail_imap(cfg):
 
                     html = msg.html or msg.text
                     if not html:
-                        print(f"    ⚠️  Email has no HTML/text content, skipping")
+                        print("    ⚠️  Email has no HTML/text content, skipping")
                         continue
 
                     try:

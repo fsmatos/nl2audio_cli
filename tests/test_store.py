@@ -2,9 +2,7 @@
 Tests for nl2audio store module.
 """
 
-import os
 import sqlite3
-import tempfile
 from pathlib import Path
 
 import pytest
@@ -50,7 +48,7 @@ class TestDatabaseContextManager:
             # Check that episodes table exists
             cursor = db.conn.execute(
                 """
-                SELECT name FROM sqlite_master 
+                SELECT name FROM sqlite_master
                 WHERE type='table' AND name='episodes'
             """
             )

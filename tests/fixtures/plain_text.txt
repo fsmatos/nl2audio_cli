@@ -20,4 +20,4 @@ UPCOMING EVENTS
 - React Conf 2024: June 10-12, San Francisco, CA
 - KubeCon 2024: November 12-15, Chicago, IL
 
-That's all for today! Keep coding and stay curious. 
+That's all for today! Keep coding and stay curious.

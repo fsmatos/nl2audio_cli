@@ -2,8 +2,8 @@
 Test database connection management and context manager behavior.
 """
 
-import os
 import sqlite3
+
 # Add src to path for imports
 import sys
 import tempfile

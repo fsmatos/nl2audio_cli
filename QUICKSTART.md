@@ -278,4 +278,4 @@ echo 'export PATH="/path/to/nl2audio_cli/venv/bin:$PATH"' >> ~/.zshrc
 
 ---
 
-**Personal Use & Copyright**: This tool is provided for personal, non-commercial use. Please respect the terms of service of the APIs and services you connect to. The nl2audio CLI is designed to help you create private podcast content from your own newsletters and content sources. 
+**Personal Use & Copyright**: This tool is provided for personal, non-commercial use. Please respect the terms of service of the APIs and services you connect to. The nl2audio CLI is designed to help you create private podcast content from your own newsletters and content sources.

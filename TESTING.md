@@ -119,4 +119,4 @@ pytest tests/test_gmail_oauth_stub.py
 - Run `nl2audio doctor` for comprehensive health check
 - Check logs in output directory
 - Use `--debug` flag for verbose output
-- Review `nl2audio doctor --probe-openai --probe-gmail` for API connectivity 
+- Review `nl2audio doctor --probe-openai --probe-gmail` for API connectivity

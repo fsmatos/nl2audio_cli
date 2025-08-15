@@ -4,7 +4,6 @@ import hashlib
 import sqlite3
 import time
 from pathlib import Path
-from typing import Iterable, Optional
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS episodes (

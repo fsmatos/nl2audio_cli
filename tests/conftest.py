@@ -2,7 +2,6 @@
 Pytest configuration and fixtures for nl2audio tests.
 """
 
-import os
 import sys
 import tempfile
 from pathlib import Path

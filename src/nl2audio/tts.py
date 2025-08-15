@@ -1,17 +1,16 @@
 from __future__ import annotations
 
 import io
-import os
 import re
 import time
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List
 
 from openai import OpenAI
 from pydub import AudioSegment
 from pydub.effects import normalize as pydub_normalize
 
-from .logging import get_logger, log_debug, log_error, log_info, log_warning
+from .logging import get_logger, log_error, log_warning
 from .validation import ValidationError, check_openai_api_key
 
 

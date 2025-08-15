@@ -5,9 +5,7 @@ Validation and health check utilities for nl2audio.
 from __future__ import annotations
 
 import os
-import sys
 from pathlib import Path
-from typing import Optional
 
 from rich.console import Console
 from rich.panel import Panel

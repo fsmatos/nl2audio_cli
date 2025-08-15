@@ -12,4 +12,3 @@ user = ""  # Set via GMAIL_USER environment variable
 app_password = ""  # Set via GMAIL_APP_PASSWORD environment variable
 label = "Newsletters"
 method = "app_password"
-

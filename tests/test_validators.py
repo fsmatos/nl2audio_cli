@@ -3,18 +3,19 @@ Tests for nl2audio validators module.
 """
 
 import os
-import shutil
-import tempfile
 from pathlib import Path
 
-import pytest
-
 from nl2audio.config import AppConfig, GmailConfig
-from nl2audio.validators import (check_ffmpeg, check_gmail_imap,
-                                 check_gmail_oauth, check_openai_key,
-                                 check_openai_probe, check_output_dir,
-                                 get_check_summary, validate_config,
-                                 validate_runtime)
+from nl2audio.validators import (
+    check_ffmpeg,
+    check_gmail_imap,
+    check_gmail_oauth,
+    check_openai_key,
+    check_output_dir,
+    get_check_summary,
+    validate_config,
+    validate_runtime,
+)
 
 
 class TestOutputDirectory:

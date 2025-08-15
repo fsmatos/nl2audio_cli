@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from pydub import AudioSegment, effects, silence
+from pydub import AudioSegment, silence
 
 
 def normalize(seg: AudioSegment, target_dbfs: float = -16.0) -> AudioSegment:
