@@ -51,7 +51,7 @@ class TestOutputDirectory:
         result = check_output_dir(config)
 
         assert result.status == "fail"
-        assert "Cannot write to output directory" in result.message
+        assert "Output directory error:" in result.message
 
 
 class TestFFmpeg:

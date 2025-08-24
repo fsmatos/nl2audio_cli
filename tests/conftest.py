@@ -11,7 +11,7 @@ import pytest
 # Add src to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from nl2audio.config import AppConfig, GmailConfig, LoggingConfig, RSSConfig
+from nl2audio.config import AppConfig, GmailConfig, LoggingConfig, RSSConfig, PrepConfig
 
 
 @pytest.fixture
@@ -41,6 +41,9 @@ def sample_config(temp_dir):
         ),
         rss=RSSConfig(enabled=True, feeds=[]),
         logging=LoggingConfig(level="INFO", enable_file_logging=False, log_file=None),
+        prep=PrepConfig(
+            enabled=False, model="gpt-3.5-turbo", temperature=0.3, max_tokens=2000
+        ),
     )
 
 

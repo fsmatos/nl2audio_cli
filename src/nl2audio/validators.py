@@ -447,3 +447,87 @@ def get_check_summary(results: List[CheckResult]) -> dict:
         "all_passed": failed == 0,
         "has_warnings": warnings > 0,
     }
+
+
+def validate_prep_config(cfg: AppConfig) -> List[CheckResult]:
+    """Validate prep configuration settings."""
+    results = []
+
+    valid_models = ["gpt-3.5-turbo", "gpt-4o"]
+    if cfg.prep.model not in valid_models:
+        results.append(
+            CheckResult(
+                name="Prep Model",
+                status="fail",
+                message=f"Invalid model '{cfg.prep.model}'. Must be one of: {', '.join(valid_models)}",
+                remediation="Set a valid prep model in your configuration",
+            )
+        )
+    else:
+        results.append(
+            CheckResult(
+                name="Prep Model",
+                status="pass",
+                message=f"Prep model configured: {cfg.prep.model}",
+                remediation=None,
+            )
+        )
+
+    if not 0.0 <= cfg.prep.temperature <= 2.0:
+        results.append(
+            CheckResult(
+                name="Prep Temperature",
+                status="fail",
+                message=f"Temperature must be between 0.0 and 2.0, got: {cfg.prep.temperature}",
+                remediation="Set temperature to a value between 0.0 and 2.0",
+            )
+        )
+    else:
+        results.append(
+            CheckResult(
+                name="Prep Temperature",
+                status="pass",
+                message=f"Temperature configured: {cfg.prep.temperature}",
+                remediation=None,
+            )
+        )
+
+    if not 100 <= cfg.prep.max_tokens <= 4000:
+        results.append(
+            CheckResult(
+                name="Prep Max Tokens",
+                status="fail",
+                message=f"Max tokens must be between 100 and 4000, got: {cfg.prep.max_tokens}",
+                remediation="Set max tokens to a value between 100 and 4000",
+            )
+        )
+    else:
+        results.append(
+            CheckResult(
+                name="Prep Max Tokens",
+                status="pass",
+                message=f"Max tokens configured: {cfg.prep.max_tokens}",
+                remediation=None,
+            )
+        )
+
+    if cfg.prep.enabled:
+        results.append(
+            CheckResult(
+                name="Prep Status",
+                status="pass",
+                message="Prep LLM is enabled and ready to use",
+                remediation=None,
+            )
+        )
+    else:
+        results.append(
+            CheckResult(
+                name="Prep Status",
+                status="warn",
+                message="Prep LLM is disabled (use --prep flag or enable in config)",
+                remediation="Enable prep in config or use --prep flag when running commands",
+            )
+        )
+
+    return results

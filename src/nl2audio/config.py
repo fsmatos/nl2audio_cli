@@ -37,6 +37,14 @@ class LoggingConfig:
 
 
 @dataclass
+class PrepConfig:
+    enabled: bool = False
+    model: str = "gpt-3.5-turbo"
+    temperature: float = 0.3
+    max_tokens: int = 2000
+
+
+@dataclass
 class AppConfig:
     output_dir: Path = DEFAULT_DIR
     feed_title: str = "My Newsletters"
@@ -48,6 +56,7 @@ class AppConfig:
     gmail: GmailConfig = field(default_factory=GmailConfig)  # ✅
     rss: RSSConfig = field(default_factory=RSSConfig)  # ✅
     logging: LoggingConfig = field(default_factory=LoggingConfig)  # ✅
+    prep: PrepConfig = field(default_factory=PrepConfig)
 
 
 def ensure_config() -> AppConfig:
@@ -72,6 +81,7 @@ def load_config() -> AppConfig:
     gmail_d = get(data, "gmail", {})
     rss_d = get(data, "rss", {})
     logging_d = get(data, "logging", {})
+    prep_d = get(data, "prep", {})
 
     # Priority: Environment variables > Config file > Defaults
     output_dir = os.getenv("NL2AUDIO_OUTPUT_DIR") or get(
@@ -127,6 +137,12 @@ def load_config() -> AppConfig:
             enable_file_logging=enable_file_logging,
             log_file=get(logging_d, "log_file", None),
         ),
+        prep=PrepConfig(
+            enabled=bool(get(prep_d, "enabled", False)),
+            model=get(prep_d, "model", "gpt-3.5-turbo"),
+            temperature=get(prep_d, "temperature", 0.3),
+            max_tokens=get(prep_d, "max_tokens", 2000),
+        ),
     )
 
 
@@ -159,6 +175,13 @@ def save_config(cfg: AppConfig) -> None:
     if cfg.logging.log_file:
         logging.add("log_file", cfg.logging.log_file)
     doc.add("logging", logging)
+
+    prep = tomlkit.table()
+    prep.add("enabled", cfg.prep.enabled)
+    prep.add("model", cfg.prep.model)
+    prep.add("temperature", cfg.prep.temperature)
+    prep.add("max_tokens", cfg.prep.max_tokens)
+    doc.add("prep", prep)
 
     CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
     CONFIG_PATH.write_text(tomlkit.dumps(doc), encoding="utf-8")

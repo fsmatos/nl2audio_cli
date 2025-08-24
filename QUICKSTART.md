@@ -101,6 +101,16 @@ nl2audio doctor --probe-gmail
 - **Feed**: `~/NewsletterCast/feed.xml`
 - **Logs**: `~/NewsletterCast/nl2audio.log`
 
+**New Prep Configuration:**
+```toml
+# ~/.nl2audio/config.toml
+[prep]
+enabled = false                    # Enable/disable prep LLM
+model = "gpt-3.5-turbo"          # LLM model to use
+temperature = 0.3                 # Creativity level (0.0-2.0)
+max_tokens = 2000                 # Maximum tokens per request
+```
+
 ## Gmail OAuth Setup
 
 ```bash
@@ -130,9 +140,52 @@ nl2audio add --source "https://example.com/newsletter" --title "Monthly Digest"
 # From stdin
 echo "Newsletter content" | nl2audio add --source - --title "Direct Input"
 
+# With LLM prep for better TTS quality
+nl2audio add --prep --model gpt-4o --source ./newsletter.txt --title "Enhanced Weekly Update"
+
 # From Gmail (auto-fetches and processes)
 nl2audio fetch-email
+
+# From Gmail with LLM prep enabled
+nl2audio fetch-email --prep --model gpt-3.5-turbo
 ```
+
+## LLM Text Preparation (Optional)
+
+The prep LLM step optimizes newsletter text for better TTS quality by:
+- Fixing formatting issues and improving sentence flow
+- Making text more conversational and read-aloud friendly
+- Preserving content while enhancing readability
+
+**CLI Flags:**
+- `--prep`: Enable LLM prep step
+- `--model`: Choose LLM model (gpt-3.5-turbo or gpt-4o)
+
+**Configuration (optional):**
+```toml
+[prep]
+enabled = false                    # Default: disabled
+model = "gpt-3.5-turbo"          # Default: gpt-3.5-turbo
+temperature = 0.3                 # Default: 0.3 (0.0-2.0)
+max_tokens = 2000                 # Default: 2000 (100-4000)
+```
+
+**Precedence:** CLI flags > config file > defaults
+
+**Example Usage:**
+```bash
+# Use CLI flags (overrides config)
+nl2audio add --prep --model gpt-4o -s newsletter.txt
+
+# Use config settings
+# (set enabled = true in ~/.nl2audio/config.toml)
+nl2audio add -s newsletter.txt
+
+# Disable prep even if enabled in config
+nl2audio add --prep false -s newsletter.txt
+```
+
+**Note:** If the LLM prep fails, the original text is preserved and a warning is logged.
 
 ## Podcast Feed Management
 
@@ -211,6 +264,10 @@ nl2audio fetch-email   # Process Gmail newsletters
 nl2audio connect-gmail # Setup Gmail OAuth
 nl2audio gmail-test    # Test Gmail connection
 nl2audio quickstart    # Display this quickstart guide
+
+# New prep LLM flags (available with add and fetch-email):
+--prep                 # Enable LLM text preparation
+--model MODEL          # Choose LLM model (gpt-3.5-turbo or gpt-4o)
 ```
 
 ## Reset & Troubleshooting

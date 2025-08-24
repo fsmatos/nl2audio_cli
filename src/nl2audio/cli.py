@@ -22,13 +22,19 @@ from .gmail_oauth import (
     get_stored_credentials,
     list_messages,
 )
+from .prep import llm_clean_for_tts
 from .ingest import from_source
 from .ingest_email import fetch_gmail
 from .logging import get_logger, log_error, log_success, setup_logging
 from .store import DB
 from .tts import TTSLengthError, synthesize
 from .validation import ValidationError
-from .validators import get_check_summary, validate_config, validate_runtime
+from .validators import (
+    get_check_summary,
+    validate_config,
+    validate_prep_config,
+    validate_runtime,
+)
 
 app = typer.Typer(help="Turn newsletters into a private podcast.")
 
@@ -109,6 +115,8 @@ def doctor(
         )
         summary = get_check_summary(results)
 
+        results.extend(validate_prep_config(cfg))
+
         # Display results in a table
         from rich.table import Table
         from rich.text import Text
@@ -181,6 +189,10 @@ def add(
         ..., "--source", "-s", help="File path, URL, or '-' for stdin"
     ),
     title: str = typer.Option(None, "--title", "-t", help="Episode title (optional)"),
+    prep: bool = typer.Option(None, "--prep", help="Enable LLM prep setup"),
+    model: str = typer.Option(
+        None, "--model", help="LLM model for prep (gpt-3.5-turbo or gpt-4o)"
+    ),
 ):
     """Add an episode from a source (file, URL, or stdin)."""
     try:
@@ -255,6 +267,23 @@ def add(
         res = from_source(source, stdin_text)
         ep_title = title or res.title or "Untitled"
         mp3_path = cfg.output_dir / "episodes" / f"{ep_title.replace(' ', '_')}.mp3"
+
+        if prep is not None:
+            prep_enabled = prep
+        elif cfg.prep.enabled:
+            prep_enabled = True
+        else:
+            prep_enabled = False
+
+        if prep_enabled:
+            model_to_use = model or cfg.prep.model
+            logger.info(f"Running LLM prep setup with model: {model_to_use}")
+            res.text = llm_clean_for_tts(
+                res.text,
+                model=model_to_use,
+                temperature=cfg.prep.temperature,
+                max_tokens=cfg.prep.max_tokens,
+            )
 
         logger.info(f"Processing episode: {ep_title}")
 
@@ -400,7 +429,12 @@ def serve(
 
 
 @app.command("fetch-email")
-def fetch_email():
+def fetch_email(
+    prep: bool = typer.Option(None, "--prep", help="Enable LLM prep setup"),
+    model: str = typer.Option(
+        None, "--model", help="LLM model for prep (gpt-3.5-turbo or gpt-4o)"
+    ),
+):
     """Fetch new emails from Gmail and convert them to episodes."""
     try:
         cfg = ensure_config()
@@ -447,6 +481,25 @@ def fetch_email():
                         / "episodes"
                         / f"{ep_title.replace(' ', '_')}.mp3"
                     )
+
+                    if prep is not None:
+                        prep_enabled = prep
+                    elif cfg.prep.enabled:
+                        prep_enabled = True
+                    else:
+                        prep_enabled = False
+
+                    if prep_enabled:
+                        model_to_use = model or cfg.prep.model
+                        logger.info(
+                            f"Running LLM prep setup with model: {model_to_use}"
+                        )
+                        msg.text = llm_clean_for_tts(
+                            msg.text,
+                            model=model_to_use,
+                            temperature=cfg.prep.temperature,
+                            max_tokens=cfg.prep.max_tokens,
+                        )
 
                     content_bytes = synthesize(
                         msg.text,
